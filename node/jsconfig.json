@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "paths": {
+      "#*": [
+        "./*"
+      ]
+    }
+  },
+  "include": ["src/**/*.mjs"],
+  "exclude": [
+    "node_modules",
+    "logs"
+  ]
+}
