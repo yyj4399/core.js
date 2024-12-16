@@ -1,6 +1,6 @@
 import { logger, logger_app, logger_sql } from "#src/core/logger.mjs";
 
-import { createClient } from "redis";
+import { createClient } from "npm:redis";
 
 // 创建redis客户端
 const client = createClient({

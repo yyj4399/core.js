@@ -1,0 +1,25 @@
+# file system
+.DS_Store
+
+# log
+*.log
+
+# redis
+dump.rdb
+
+# node.js
+node_modules
+
+# docker
+/docker
+/docker-compose.env.yml
+
+# log
+logs
+/run.log
+
+# test
+/req.js
+/req.mjs
+/req.ts
+/req.mts

@@ -25,6 +25,25 @@ else
   fi
 fi
 
+# 如果要使用vscode-deno 需要先在服务器上安装deno
+# https://docs.deno.com/runtime/getting_started/installation/
+# ------------------------------------------------------------------------------------------------
+# 检查 deno 是否安装
+# Check if deno is installed
+if command -v deno >/dev/null 2>&1; then
+  # deno 已安装，输出版本信息
+  # deno is installed and version information is output.
+  deno_version=$(deno --version)
+  echo "$deno_version"
+else
+  # deno 未安装
+  curl -fsSL https://deno.land/install.sh | sh
+
+  if command -v deno >/dev/null 2>&1; then
+    exit 1
+  fi
+fi
+
 # 停止容器组
 docker compose down
 
@@ -52,6 +71,17 @@ fi
 
 if [ ! -e $CURRENT_DIR/docker/secrets/dev_mode ]; then
   echo 0 > $CURRENT_DIR/docker/secrets/dev_mode
+fi
+
+# ------------------------------------------------------------------------------------------------
+# 初始化 run.sh
+
+if [ ! -d $CURRENT_DIR/deno ]; then
+  mkdir -p $CURRENT_DIR/deno
+fi
+
+if [ ! -e $CURRENT_DIR/deno/run.sh ]; then
+  echo true > $CURRENT_DIR/deno/run.sh
 fi
 
 # 设置目录权限，否则psql会创建失败
@@ -105,6 +135,21 @@ services:
     working_dir: $CURRENT_DIR/node
     entrypoint: $CURRENT_DIR/node/run.sh
 
+  deno:
+    image: denoland/deno:ubuntu
+    # restart: unless-stopped
+    tty: true
+    depends_on:
+      - redis
+      - psql
+    volumes_from:
+      - redis
+    volumes:
+      - /root/.cache/deno:/root/.cache/deno:delegated
+    secrets:
+      - dev_mode
+    working_dir: $CURRENT_DIR/deno
+    entrypoint: $CURRENT_DIR/deno/run.sh
 EOF
 
 # ------------------------------------------------------------------------------------------------

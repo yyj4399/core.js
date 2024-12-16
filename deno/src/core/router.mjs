@@ -2,7 +2,7 @@
 import { logger, logger_app, logger_sql } from "#src/core/logger.mjs";
 
 // sdk
-import Router from "koa-router";
+import Router from "npm:koa-router";
 
 // 路由实例
 export const core_router = new Router();

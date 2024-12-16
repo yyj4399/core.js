@@ -1,7 +1,7 @@
 // log
 import { logger, logger_app, logger_sql } from "#src/core/logger.mjs";
 
-import { create as svg_create, createMathExpr as svg_createMathExpr } from "svg-captcha";
+import { create as svg_create, createMathExpr as svg_createMathExpr } from "npm:svg-captcha";
 
 import { cache_func } from "#src/core/cache.mjs";
 
